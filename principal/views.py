@@ -18,15 +18,9 @@ def buscarTitulo(request):
         if form.is_valid():
             tituloJuego = form.cleaned_data['titulo']
             print tituloJuego
-            juegos= Juego.objects.all()
-            #print Libro.objects.get(ISBN="451167317")
-            arrayMaestro=[]
-            for juego in juegos:
-                if tituloJuego.lower() in juego.titulo.lower():
-                    arrayMaestro.append(juego)
-                
-                                       
-            return render_to_response('titulos.html', {'juegosTitulo':arrayMaestro})
+            juegos= Juego.objects.filter(titulo__icontains = tituloJuego)
+    
+            return render_to_response('titulos.html', {'juegosTitulo':juegos})
     else:
         form=TituloForm()
     return render_to_response('buscarTitulo.html', {'form':form }, context_instance=RequestContext(request))

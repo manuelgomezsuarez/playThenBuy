@@ -12,6 +12,38 @@ def listadoJuegos(request):
     juegos=Juego.objects.all()
     return render_to_response('listadoJuegos.html', {'juegos':juegos})
 
+def orderLanzamientoDesc(request):
+    juegos=Juego.objects.order_by("-fecha_lanzamiento")
+    return render_to_response('listadoJuegos.html', {'juegos':juegos})
+
+def orderLanzamientoAsc(request):
+    juegos=Juego.objects.order_by("fecha_lanzamiento")
+    return render_to_response('listadoJuegos.html', {'juegos':juegos})
+
+def orderTituloAsc(request):
+    juegos=Juego.objects.order_by("titulo")
+    return render_to_response('listadoJuegos.html', {'juegos':juegos})
+
+def orderTituloDesc(request):
+    juegos=Juego.objects.order_by("-titulo")
+    return render_to_response('listadoJuegos.html', {'juegos':juegos})
+
+def orderPesoAsc(request):
+    juegos=Juego.objects.order_by("tamano")
+    return render_to_response('listadoJuegos.html', {'juegos':juegos})
+
+def orderPesoDesc(request):
+    juegos=Juego.objects.order_by("-tamano")
+    return render_to_response('listadoJuegos.html', {'juegos':juegos})
+
+def orderDesarrolladoraAsc(request):
+    juegos=Juego.objects.order_by("desarrolladora")
+    return render_to_response('listadoJuegos.html', {'juegos':juegos})
+
+def orderDesarrolladoraDesc(request):
+    juegos=Juego.objects.order_by("-desarrolladora")
+    return render_to_response('listadoJuegos.html', {'juegos':juegos})
+
 def buscarTitulo(request):
     if request.method=='GET':
         form = TituloForm(request.GET, request.FILES)
@@ -20,7 +52,7 @@ def buscarTitulo(request):
             print tituloJuego
             juegos= Juego.objects.filter(titulo__icontains = tituloJuego)
     
-            return render_to_response('titulos.html', {'juegosTitulo':juegos})
+            return render_to_response('listadoJuegos.html', {'juegos':juegos})
     else:
         form=TituloForm()
     return render_to_response('buscarTitulo.html', {'form':form }, context_instance=RequestContext(request))

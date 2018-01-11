@@ -10,5 +10,13 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^listadoJuegos/', 'principal.views.listadoJuegos'),
     url(r'^buscarTitulo/', 'principal.views.buscarTitulo'),
+    url(r'^orderLanzamientoAsc/', 'principal.views.orderLanzamientoAsc'),
+    url(r'^orderLanzamientoDesc/', 'principal.views.orderLanzamientoDesc'),
+    url(r'^orderTituloAsc', 'principal.views.orderTituloAsc'),
+    url(r'^orderTituloDesc/', 'principal.views.orderTituloDesc'),
+    url(r'^orderPesoAsc/', 'principal.views.orderPesoAsc'),
+    url(r'^orderPesoDesc/', 'principal.views.orderPesoDesc'),
+    url(r'^orderDesarrolladoraAsc/', 'principal.views.orderDesarrolladoraAsc'),
+    url(r'^orderDesarrolladoraDesc/', 'principal.views.orderDesarrolladoraDesc'),
     
 )

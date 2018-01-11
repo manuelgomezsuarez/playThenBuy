@@ -8,7 +8,7 @@ urlpatterns = patterns('',
     url(r'^$', 'principal.views.index'),                   
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^listadoJuegos', 'principal.views.listadoJuegos'),
-    url(r'^buscarTitulo', 'principal.views.buscarTitulo'),
+    url(r'^listadoJuegos/', 'principal.views.listadoJuegos'),
+    url(r'^buscarTitulo/', 'principal.views.buscarTitulo'),
     
 )

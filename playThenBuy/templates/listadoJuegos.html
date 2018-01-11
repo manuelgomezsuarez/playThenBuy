@@ -67,10 +67,23 @@ table.blueTable tfoot .links a{
 <table class="blueTable">
 <thead>
 <tr>
-  <th>Titulo</th>
-  <th>Desarrolladora</th>
-  <th>Lanzamiento</th>
-  <th>Peso (GB)</th>
+  <th> Titulo
+    <a href="orderTituloAsc">ASC</a>
+  <a href="orderTituloDesc">DESC</a>
+  </th>
+  <th> Desarrolladora
+    <a href="orderDesarrolladoraAsc">ASC</a>
+  <a href="orderDesarrolladoraAsc">DESC</a>
+  </th>
+  <th> Lanzamiento
+    <a href="orderLanzamientoAsc">ASC</a>
+  <a href="orderLanzamientoDesc">DESC</a>
+  </th>
+  <th> Peso
+  <a href="orderPesoAsc">ASC</a>
+  <a href="orderPesoDesc">DESC</a>
+  </th>
+  <th>Ver mas..</th>
 </tr>
 </thead>
 {% for r in juegos %}
@@ -79,6 +92,7 @@ table.blueTable tfoot .links a{
   <th> {{ r.desarrolladora }}</th>
   <th> {{ r.fecha_lanzamiento }}</th>
   <th> {{ r.tamano }}</th>
+  <th> <a href="juego/{{r.id}}">Display</a></th>
 </tr> 
 {% endfor %}
 </table>

@@ -1,0 +1,16 @@
+<html>
+<head>
+<title>Filtrar por genero</title>
+</head>
+<body>
+<header>
+{% include 'header.html' %}
+
+<h1>Filtrar por genero</h1>
+<form method="post" id='form'>
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Submit</button>
+</form>
+</body>
+</html>

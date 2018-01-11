@@ -1,5 +1,6 @@
 <html>
 <head>
+<meta charset="utf-8">
 <title>Lista de juegos</title>
 <style type="text/css">
 table.blueTable {
@@ -86,6 +87,10 @@ table.blueTable tfoot .links a{
   <a href="/orderPesoAsc">ASC</a>
   <a href="/orderPesoDesc">DESC</a>
   </th>
+  <th> Precio (€)
+  <a href="/orderPrecioAsc">ASC</a>
+  <a href="/orderPrecioDesc">DESC</a>
+  </th>
   <th>Ver mas..</th>
 </tr>
 </thead>
@@ -95,6 +100,7 @@ table.blueTable tfoot .links a{
   <th> {{ r.desarrolladora }}</th>
   <th> {{ r.fecha_lanzamiento }}</th>
   <th> {{ r.tamano }}</th>
+  <th> {{ r.precio_compra }}</th>
   <th> <a href="/juego/{{r.id}}">Display</a></th>
 </tr> 
 {% endfor %}

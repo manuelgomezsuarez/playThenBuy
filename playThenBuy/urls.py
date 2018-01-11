@@ -22,6 +22,8 @@ urlpatterns = patterns('',
     url(r'^orderPesoDesc/', 'principal.views.orderPesoDesc'),
     url(r'^orderDesarrolladoraAsc/', 'principal.views.orderDesarrolladoraAsc'),
     url(r'^orderDesarrolladoraDesc/', 'principal.views.orderDesarrolladoraDesc'),
+    url(r'^orderPrecioDesc/', 'principal.views.orderPrecioDesc'),
+    url(r'^orderPrecioAsc/', 'principal.views.orderPrecioAsc'),
     url(r'^filtros/', 'principal.views.filtros'),
     
 )

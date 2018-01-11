@@ -1,14 +1,15 @@
 from django import forms
-from django.utils.safestring import SafeString
 from principal.models import Genero
-
+from django.core.validators import MinValueValidator,MaxValueValidator
 
 class TituloForm(forms.Form):
     titulo = forms.CharField(label='Titulo juego')
     
 class FiltroForm(forms.Form):
-#     precioMin= forms.FloatField(null=True())(label='precioMin')
-#     precioMax= forms.FloatField(null=True())(label='precioMax')
+    precioMin= forms.FloatField(label='Precio maximo',required=False,validators=[MinValueValidator(0)])
+    precioMax= forms.FloatField(label='Precio mimimo',required=False,validators=[MinValueValidator(0)])
+    
+   
     
     generos=Genero.objects.all()
     
@@ -16,6 +17,11 @@ class FiltroForm(forms.Form):
     for i in generos:
         opciones.append([i,i])
 
-    countries = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-                                         choices=opciones)
+    Generos = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                         choices=opciones,required=False)
+    
+    
+    
+
+    
 

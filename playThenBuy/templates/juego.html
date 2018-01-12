@@ -6,15 +6,18 @@
 <title></title>
  <style type="text/css">
  div.descripcion{
-    position: absolute;
-    top: 37%;
-    left: 40%;
+    position: relative;
+    left:25%;
     background-color: #e2e5de;
-    height:47%;
+    height:38%;
     width:50%;
+    
 }
 
+ div.todoCentrado{
+    text-align: center
 
+}
 
  
  </style>
@@ -22,6 +25,7 @@
 <body>
  {% include 'header.html' %}
 
+<div class="todoCentrado">
 <h1>
 {{juego.titulo}}
 </h1>
@@ -36,7 +40,7 @@
 <br>
 <b>Generos:</b>
 {% for r in generos %}
- {{r}} |	
+ {{r}} |    
 {% endfor %}
 <br>
 <b>Espacio Requerido Disco (Tamaño):</b>
@@ -44,27 +48,38 @@
 GB
 </div>
 <div class="video">
-<object width="500" height="300"
+<object width="400" height="300"
 data="https://www.youtube.com/embed/94qn2-E9glM">
 </object>
 </div>
 <!-- {{juego.enlace_gameplay}} -->
+<br>
 
 
 <div class="descripcion">
+<br>
 <b>Descripcion:</b>
 {{juego.info_juego}}
 </div>
 
 <div class="torrentCompra">
+{% if login.is_authenticated %}
+<div class="torrentCompra">
 <b>Descarga el juego aqui:</b>
 <a href="{{juego.enlace_Torrent}}">Enlace Torrent</a>
+ {% endif %}
+ 
+{% if not login.is_authenticated %}
+<div class="torrentCompra">
+<b>Solo los usuarios registrados tienen acceso a los enlaces torrent</b>
+<a href="/login">Login</a>
+ {% endif %}
 
 
 </div>
 
 <!-- {{juego.version}} -->
-<b>Si el juego te gusta, por favor cómpralo y ayuda a los desarrolladores.</b>
+Si el juego te gusta, por favor cómpralo y ayuda a los desarrolladores.
 <br>
 <b>Precio Mas barato:</b>
 {{juego.precio_compra}}
@@ -72,6 +87,27 @@ data="https://www.youtube.com/embed/94qn2-E9glM">
 <br>
 <b>Enlace de compra del juego:</b>
 <a href="{{juego.enlace_compra}}">Enlace Compra</a>
+<br><br>
+
+
+{%if not juegoRecomendado == 0 %}
+<b>Si te ha gustado este juego podría interesarte el siguiente..</b>
+<br>
+<b>{{juegoRecomendado}}</b>
+<a href="/juego/?id={{r.id}}">Display</a>
+<br>
+
+<object width="250" height="200"
+data="https://www.youtube.com/embed/94qn2-E9glM">
+</object>
+
+
+{%else%}
+No se encontraron otros juegos similares :(
+{%endif%}
+
+</div>
+
  </body>
 
 

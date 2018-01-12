@@ -75,6 +75,14 @@ nav {
 	font-size: 1.1em;
 	line-height: 1.5em;
 }
+
+div.login{
+	background-color: #d2d8db; 
+	position:static;
+	left:30%;
+	rigth:30%;
+
+}
  </style>
 </head>
  
@@ -100,13 +108,13 @@ nav {
 	</header><!-- / #main-header -->
 <body background="http://static.tumblr.com/tkqqpe9/14Hm5md9x/subtle-pattern-5.jpg">
 
-{% block title %}Login{% endblock %}
-
+<div class="login">
 {% block content %}
   <h2>Login</h2>
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    <b>{{ form.as_p }}</b>
     <button type="submit">Login</button>
   </form>
 {% endblock %}
+</div>

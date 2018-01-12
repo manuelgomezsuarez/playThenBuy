@@ -197,11 +197,18 @@ def populateUserAccounts():
         ids = User.objects.values_list('pk', flat=True)[:100]
         User.objects.filter(pk__in = ids).delete()
     
-    User.objects.create(username="user1",first_name="Usuario 1",last_name="Usuario 1 apellido",email="user1@gmail.com",password="user1")
-    User.objects.create(username="user2",first_name="Usuario 2",last_name="Usuario 2 apellido",email="user2@gmail.com",password="user2")
-    User.objects.create(username="user3",first_name="Usuario 3",last_name="Usuario 3 apellido",email="user3@gmail.com",password="user3")
-    User.objects.create(username="user4",first_name="Usuario 4",last_name="Usuario 4 apellido",email="user4@gmail.com",password="user4")
-
+    u1=User.objects.create(username="user1",first_name="Usuario 1",last_name="Usuario 1 apellido",email="user1@gmail.com",password="user1")
+    u1.set_password(u1.password)
+    u1.save()
+    u2=User.objects.create(username="user2",first_name="Usuario 2",last_name="Usuario 2 apellido",email="user2@gmail.com",password="user2")
+    u2.set_password(u2.password)
+    u2.save()
+    u3=User.objects.create(username="user3",first_name="Usuario 3",last_name="Usuario 3 apellido",email="user3@gmail.com",password="user3")
+    u3.set_password(u3.password)
+    u3.save()
+    u4=User.objects.create(username="user4",first_name="Usuario 4",last_name="Usuario 4 apellido",email="user4@gmail.com",password="user4")
+    u4.set_password(u4.password)
+    u4.save()
     print("Cuentas insertados: " + str(User.objects.count()))
     print("---------------------------------------------------------")
 

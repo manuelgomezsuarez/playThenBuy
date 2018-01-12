@@ -2,8 +2,11 @@
 # Create your views here.
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+
+from principal.forms import TituloForm, FiltroForm
 from principal.models import Juego
-from principal.forms import TituloForm,FiltroForm
+import recommendations
+
 
 def index(request): 
     return render_to_response('index.html')
@@ -85,8 +88,6 @@ def filtros(request):
             if precioMax==None:
                 precioMax=999. 
                 
-            print precioMin
-            print precioMax
             if float(precioMax) >= float(precioMin):
                 
                 
@@ -113,13 +114,34 @@ def filtros(request):
          
     return render_to_response('filtros.html', {'form':form }, context_instance=RequestContext(request))
 
-
 def juego(request):
     idJuego=request.GET.get("id")
     juego=Juego.objects.get(id=idJuego)
+    juegoRecomendado=0
+    try:
+        juegoRecomendado=recommendations.juegoSimilar(juego.version)[0]
+    except:
+        pass
+    
+    
+    juegosRecomendadosUsuario=0
+    
+    try:
+        juegosRecomendadosUsuario=recommendations.juegosRecomendados(juego.version)
+    except:
+        pass
+    print juegosRecomendadosUsuario
     generos=[]
     for i in juego.generos.all():
         generos.append(i.nombre_genero)
-    return render_to_response('juego.html',{"juego":juego , "generos":generos})
-    
+    return render_to_response('juego.html',{"juego":juego , "generos":generos, "juegoRecomendado":juegoRecomendado,"login":request.user})
+
+def puntua(request):
+    if request.method=='GET':
+        idJuego=request.GET.get("id")
+        return juego()
+    else:
+        form=TituloForm()
+    return render_to_response('buscarTitulo.html', {'form':form }, context_instance=RequestContext(request))
+
 

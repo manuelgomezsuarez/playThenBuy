@@ -27,6 +27,7 @@ urlpatterns = patterns('',
     url(r'^orderPrecioAsc/', 'principal.views.orderPrecioAsc'),
     url(r'^filtros/', 'principal.views.filtros'),
     url(r'^juego/', 'principal.views.juego'),
+    url(r'^puntua/', 'principal.views.puntua'),
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
     

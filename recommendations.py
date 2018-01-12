@@ -187,10 +187,4 @@ def juegosRecomendados(first_name): #devuelve la lista de juegos mas recomendado
 
 
 
-print juegoSimilar("Gold Rush The Game v1.2.6682")
-
-print juegosRecomendados("Usuario 4")
-
-
-
 

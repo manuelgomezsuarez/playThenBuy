@@ -19,7 +19,85 @@
 
 }
 
+/*GROW*/
+.brighten img {
+	width: 130px;
+ 	height: 100px;
  
+  -webkit-transition: all 1s ease;
+     -moz-transition: all 1s ease;
+       -o-transition: all 1s ease;
+      -ms-transition: all 1s ease;
+          transition: all 1s ease;
+}
+ 
+.brighten img:hover {
+  width: 180px;
+  height: 150px;
+}
+ 
+ 
+table.blueTable {
+  border: 1px solid #1C6EA4;
+  background-color: #EEEEEE;
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+table.blueTable td, table.blueTable th {
+  border: 1px solid #AAAAAA;
+  padding: 3px 2px;
+}
+a {
+  color: #FD9801;
+}
+table.blueTable tbody td {
+  font-size: 13px;
+}
+table.blueTable tr:nth-child(even) {
+  background: #D0E4F5;
+}
+table.blueTable thead {
+  background: #1C6EA4;
+  background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+  background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+  background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+  border-bottom: 2px solid #444444;
+}
+table.blueTable thead th {
+  font-size: 15px;
+  font-weight: bold;
+  color: #FFFFFF;
+  border-left: 2px solid #D0E4F5;
+}
+table.blueTable thead th:first-child {
+  border-left: none;
+}
+
+table.blueTable tfoot {
+  font-size: 14px;
+  font-weight: bold;
+  color: #FFFFFF;
+  background: #D0E4F5;
+  background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+  background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+  background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+  border-top: 2px solid #444444;
+}
+table.blueTable tfoot td {
+  font-size: 14px;
+}
+table.blueTable tfoot .links {
+  text-align: right;
+}
+table.blueTable tfoot .links a{
+  display: inline-block;
+  background: #1C6EA4;
+  color: #FFFFFF;
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+
  </style>
 </head>
 <body>
@@ -38,6 +116,9 @@
 <b>Editor:</b>
 {{juego.editor}}
 <br>
+{{juego.version}}
+<br>
+<br>
 <b>Generos:</b>
 {% for r in generos %}
  {{r}} |    
@@ -48,36 +129,37 @@
 GB
 </div>
 <div class="video">
+{% if login.is_authenticated %}
+<a href="/puntua/?id={{juego.id}}">Puntuar Este Juego</a>
+ {% endif %}
+ <br>
 <object width="400" height="300"
-data="https://www.youtube.com/embed/94qn2-E9glM">
+data="{{juego.enlace_gameplay}}">
 </object>
-</div>
-<!-- {{juego.enlace_gameplay}} -->
-<br>
+
 
 
 <div class="descripcion">
-<br>
-<b>Descripcion:</b>
-{{juego.info_juego}}
+	<br>
+	<b>Descripcion:</b>
+	{{juego.info_juego}}
 </div>
-
+<br>
 <div class="torrentCompra">
 {% if login.is_authenticated %}
-<div class="torrentCompra">
 <b>Descarga el juego aqui:</b>
 <a href="{{juego.enlace_Torrent}}">Enlace Torrent</a>
+
  {% endif %}
  
 {% if not login.is_authenticated %}
-<div class="torrentCompra">
+
 <b>Solo los usuarios registrados tienen acceso a los enlaces torrent</b>
 <a href="/login">Login</a>
+</div>
  {% endif %}
 
-
-</div>
-
+<br>
 <!-- {{juego.version}} -->
 Si el juego te gusta, por favor cómpralo y ayuda a los desarrolladores.
 <br>
@@ -94,16 +176,57 @@ Si el juego te gusta, por favor cómpralo y ayuda a los desarrolladores.
 <b>Si te ha gustado este juego podría interesarte el siguiente..</b>
 <br>
 <b>{{juegoRecomendado}}</b>
-<a href="/juego/?id={{r.id}}">Display</a>
+
 <br>
+<a href="/juego/?id={{juegoRecomendado.id}}">Display</a>
+<div class="brighten pic">
 
-<object width="250" height="200"
-data="https://www.youtube.com/embed/94qn2-E9glM">
-</object>
+<img src="{{juegoRecomendado.imagen_gameplay}}">
 
+</div>
+
+<br>
 
 {%else%}
 No se encontraron otros juegos similares :(
+<br>
+{%endif%}
+
+
+
+{%if not juegosRecomendadosUsuario == 0 %}
+
+<b>Hola {{login.first_name}}, parece que le gustaron juegos como {{juegoUsuario}} creemos que tambien le gustarian los siguientes.</b>
+<br>
+
+
+
+<table align="center"  class="blueTable">
+
+{% for asd in juegosRecomendadosUsuario %}
+
+  <th> {{ asd.version }}
+  
+  <br>
+  <a href="/juego/?id={{asd.id}}">Display</a>
+  <br>
+  
+    <div class="brighten pic">
+  
+  <img src="{{asd.imagen_gameplay}}">
+  <br>
+  
+  
+	</div>
+  </th>
+
+{% endfor %}
+</table>
+
+
+
+{%else%}
+Debe valorar otros juegos para que podamos recomendarle conforme a sus gustos...
 {%endif%}
 
 </div>

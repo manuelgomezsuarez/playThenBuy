@@ -60,7 +60,8 @@ def populateJuegos():
             info_juego=data[9].decode('unicode-escape')
             generosJuego=data[10]
             version=data[11]
-            juegoInstancia=Juego.objects.create(titulo=titulo, desarrolladora=desarrolladora,editor=editor,fecha_lanzamiento=fecha_lanzamiento,tamano=tamano,enlace_Torrent=enlace_Torrent,enlace_compra=enlace_compra,precio_compra=precio_compra,enlace_gameplay=enlace_gameplay,info_juego=info_juego,version=version)   
+            imagen_gameplay=data[12]
+            juegoInstancia=Juego.objects.create(titulo=titulo, desarrolladora=desarrolladora,editor=editor,fecha_lanzamiento=fecha_lanzamiento,tamano=tamano,enlace_Torrent=enlace_Torrent,enlace_compra=enlace_compra,precio_compra=precio_compra,enlace_gameplay=enlace_gameplay,info_juego=info_juego,version=version,imagen_gameplay=imagen_gameplay)   
             
             for a in generosJuego: 
                 try:
@@ -87,7 +88,7 @@ def obtenDatosDePagina():
         listaJuegos=soup.find_all("ul",attrs={"class":"lcp_catlist"})
         for juego in listaJuegos[0].find_all("a"):
             try:
-                arrayEsclavo=[0,0,0,0,0,0,0,0,0,0,0,0]
+                arrayEsclavo=[0,0,0,0,0,0,0,0,0,0,0,0,0]
                 
                 enlaceJuego=(juego.get("href"))
                 tituloJuego=(juego.get("title")).encode("utf-8")
@@ -153,15 +154,23 @@ def obtenDatosDePagina():
                 print(enlaceTorrent)
                 
                 
-#                 textToSearch = titulo
-#                 query = urllib2.quote(textToSearch)
-#                 url = "https://www.youtube.com/results?search_query=" + query
-#                 url=url.replace("watch?v=","embed/")
-#                 response = urllib2.urlopen(url)
-#                 html = response.read()
-#                 soup4 = BeautifulSoup(html,'html.parser')
-#                 videos=soup4.findAll(attrs={'class':'yt-uix-tile-link'})
-#                 enlaceGameplay= 'https://www.youtube.com' + videos[0]["href"]
+                textToSearch = titulo
+                query = urllib2.quote(textToSearch)
+                url = "https://www.youtube.com/results?search_query=" + query
+                
+                response = urllib2.urlopen(url)
+                html = response.read()
+                soup4 = BeautifulSoup(html,'html.parser')
+                videos=soup4.findAll(attrs={'class':'yt-uix-tile-link'})
+                
+                
+                enlaceGameplay= 'https://www.youtube.com' + videos[0]["href"]
+                enlaceGameplay=enlaceGameplay.replace("watch?v=","embed/")
+                
+                imagenGameplay= 'http://img.youtube.com' + videos[0]["href"]+'/default.jpg'
+                
+                imagenGameplay=imagenGameplay.replace("watch?v=","vi/")
+                
                 
                 arrayEsclavo[0]=titulo
                 arrayEsclavo[1]=desarrolladora
@@ -171,10 +180,11 @@ def obtenDatosDePagina():
                 arrayEsclavo[5]=enlaceTorrent
                 arrayEsclavo[6]=precioEnlaceJuego
                 arrayEsclavo[7]=precioJuego
-                arrayEsclavo[8]="baneaso de ip"
+                arrayEsclavo[8]=enlaceGameplay
                 arrayEsclavo[9]=informacionJuego
                 arrayEsclavo[10]=sepGeneros
                 arrayEsclavo[11]=tituloJuego
+                arrayEsclavo[12]=imagenGameplay
                 arrayMaestro.append(arrayEsclavo)
                 cont=cont+1
             except Exception as e:
@@ -183,7 +193,7 @@ def obtenDatosDePagina():
            
             
             print("*************")
-            if cont==15:
+            if cont==10:
                 print "Se extrajeron "+str(cont)+" juegos"
                 return arrayMaestro,set(generos)
             

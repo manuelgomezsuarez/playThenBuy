@@ -22,6 +22,7 @@ class Juego(models.Model):
     enlace_compra=models.CharField(max_length=100,null=True)
     precio_compra=models.FloatField(null=True)
     enlace_gameplay=models.CharField(max_length=100,null=True)
+    imagen_gameplay=models.CharField(max_length=100,null=True)
     info_juego=models.CharField(max_length=500,null=True)
     generos = models.ManyToManyField(Genero)
     version = models.CharField(max_length=200,null=True)

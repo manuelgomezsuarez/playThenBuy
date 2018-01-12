@@ -1,0 +1,18 @@
+<html>
+<head>
+<title>Puntua este Juego</title>
+</head>
+<body>
+<header>
+{% include 'header.html' %}
+
+<h1>Puntuar Juego</h1>
+<form id='form' method='post' action=''>
+{% csrf_token %}
+{{form.as_p}}
+{{error}}
+<p><input type='submit' value='Confirm'/></p>
+</form>
+
+</body>
+</html>

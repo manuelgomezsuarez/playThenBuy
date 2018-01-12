@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 # Create your views here.
-from django.shortcuts import render_to_response, get_object_or_404
+import random
+
+from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404, render
 from django.template import RequestContext
 
-from principal.forms import TituloForm, FiltroForm
-from principal.models import Juego
+from principal.forms import TituloForm, FiltroForm, PuntuacionForm
+from principal.models import Juego, Usuario, Puntuacion
 import recommendations
 
 
@@ -118,30 +121,73 @@ def juego(request):
     idJuego=request.GET.get("id")
     juego=Juego.objects.get(id=idJuego)
     juegoRecomendado=0
+    
+    generos=[]
+    for i in juego.generos.all():
+        generos.append(i.nombre_genero)
+        
+        
     try:
         juegoRecomendado=recommendations.juegoSimilar(juego.version)[0]
     except:
         pass
     
     
-    juegosRecomendadosUsuario=0
     
+
     try:
-        juegosRecomendadosUsuario=recommendations.juegosRecomendados(juego.version)
+        resultado=recommendations.juegosRecomendados(request.user.first_name)
+        juegosRecomendadosUsuario=[]
+        for r in resultado:
+            
+            j=Juego.objects.filter(version=r[1])
+            
+            juegosRecomendadosUsuario.append(j[0])
+        juegosQueRecomendo=Puntuacion.objects.filter(usuario_id=request.user.id)
+        print juegosQueRecomendo
+        juegoUsuario=juegosQueRecomendo[random.randrange(0,len(juegosQueRecomendo)+1)].juego
+
     except:
-        pass
-    print juegosRecomendadosUsuario
-    generos=[]
-    for i in juego.generos.all():
-        generos.append(i.nombre_genero)
-    return render_to_response('juego.html',{"juego":juego , "generos":generos, "juegoRecomendado":juegoRecomendado,"login":request.user})
+        
+        juegosRecomendadosUsuario=0
+        return render_to_response('juego.html',{"juego":juego , "generos":generos, 
+                                            "juegoRecomendado":juegoRecomendado,"login":request.user,
+                                            "juegosRecomendadosUsuario":juegosRecomendadosUsuario})
+
+    
+
+    
+    
+    
+        
+    
+    
+    return render_to_response('juego.html',{"juego":juego , "generos":generos, 
+                                            "juegoRecomendado":juegoRecomendado,"login":request.user,
+                                            "juegosRecomendadosUsuario":juegosRecomendadosUsuario,
+                                            "juegoUsuario":juegoUsuario})
 
 def puntua(request):
-    if request.method=='GET':
-        idJuego=request.GET.get("id")
-        return juego()
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = PuntuacionForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            valorPuntuacion = request.POST.get("valor")
+            juego=  Juego.objects.get(id=request.GET.get("id"))
+            usuario=Usuario.objects.get(id=request.user.id)
+            yaPuntuado=Puntuacion.objects.filter(juego=juego,usuario=usuario)
+            if len(yaPuntuado)>0:
+                error="Ya has votado este juego, no puedes votar dos veces."
+                return render(request, 'puntua.html', {'form': form,"error":error})
+            Puntuacion.objects.create(usuario=usuario,juego=juego,valor=valorPuntuacion)
+            return HttpResponseRedirect('/juego/?id='+request.GET.get("id"))
+
+    # if a GET (or any other method) we'll create a blank form
     else:
-        form=TituloForm()
-    return render_to_response('buscarTitulo.html', {'form':form }, context_instance=RequestContext(request))
+        form = PuntuacionForm()
+        
+    return render(request, 'puntua.html', {'form': form})
 
 

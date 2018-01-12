@@ -3,6 +3,10 @@
 <meta charset="utf-8">
 <title>Lista de juegos</title>
 <style type="text/css">
+.logo {
+width: 80px;
+height: 50px;
+}
 table.blueTable {
   border: 1px solid #1C6EA4;
   background-color: #EEEEEE;
@@ -71,10 +75,14 @@ table.blueTable tfoot .links a{
 <table class="blueTable">
 <thead>
 <tr>
+<th> Preview
+
+  </th>
   <th> Titulo
     <a href="/orderTituloAsc">ASC</a>
   <a href="/orderTituloDesc">DESC</a>
   </th>
+  
   <th> Desarrolladora
     <a href="/orderDesarrolladoraAsc">ASC</a>
   <a href="/orderDesarrolladoraDesc">DESC</a>
@@ -96,7 +104,10 @@ table.blueTable tfoot .links a{
 </thead>
 {% for r in juegos %}
 <tr>
+
+	<th> <img src="{{r.imagen_gameplay}}" alt="logo" class="logo"></th>
   <th> {{ r.titulo }}</th>
+  
   <th> {{ r.desarrolladora }}</th>
   <th> {{ r.fecha_lanzamiento }}</th>
   <th> {{ r.tamano }}</th>

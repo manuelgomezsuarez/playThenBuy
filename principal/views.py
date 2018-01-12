@@ -40,6 +40,10 @@ def orderDesarrolladoraAsc(request):
     juegos=Juego.objects.order_by("desarrolladora")
     return render_to_response('listadoJuegos.html', {'juegos':juegos})
 
+def orderDesarrolladoraDesc(request):
+    juegos=Juego.objects.order_by("-desarrolladora")
+    return render_to_response('listadoJuegos.html', {'juegos':juegos})
+
 def orderPrecioDesc(request):
     juegos=Juego.objects.order_by("-precio_compra")
     return render_to_response('listadoJuegos.html', {'juegos':juegos})
@@ -108,3 +112,14 @@ def filtros(request):
         form=FiltroForm()
          
     return render_to_response('filtros.html', {'form':form }, context_instance=RequestContext(request))
+
+
+def juego(request):
+    idJuego=request.GET.get("id")
+    juego=Juego.objects.get(id=idJuego)
+    generos=[]
+    for i in juego.generos.all():
+        generos.append(i.nombre_genero)
+    return render_to_response('juego.html',{"juego":juego , "generos":generos})
+    
+

@@ -4,6 +4,7 @@ from django.contrib import admin
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
+from django.contrib.auth import views as auth_views 
 
 
 
@@ -25,5 +26,8 @@ urlpatterns = patterns('',
     url(r'^orderPrecioDesc/', 'principal.views.orderPrecioDesc'),
     url(r'^orderPrecioAsc/', 'principal.views.orderPrecioAsc'),
     url(r'^filtros/', 'principal.views.filtros'),
+    url(r'^juego/', 'principal.views.juego'),
+    url(r'^login/$', auth_views.login, name='login'),
+    url(r'^logout/$', auth_views.logout, name='logout'),
     
 )

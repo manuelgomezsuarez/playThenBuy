@@ -1,0 +1,78 @@
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<title></title>
+ <style type="text/css">
+ div.descripcion{
+    position: absolute;
+    top: 37%;
+    left: 40%;
+    background-color: #e2e5de;
+    height:47%;
+    width:50%;
+}
+
+
+
+ 
+ </style>
+</head>
+<body>
+ {% include 'header.html' %}
+
+<h1>
+{{juego.titulo}}
+</h1>
+
+<div class="cabecera">
+<b>Fecha Lanzamiento: </b>
+{{juego.fecha_lanzamiento}} |
+<b>Desarrolladora:</b>
+{{juego.desarrolladora}} |
+<b>Editor:</b>
+{{juego.editor}}
+<br>
+<b>Generos:</b>
+{% for r in generos %}
+ {{r}} |	
+{% endfor %}
+<br>
+<b>Espacio Requerido Disco (Tamaño):</b>
+{{juego.tamano}}
+GB
+</div>
+<div class="video">
+<object width="500" height="300"
+data="https://www.youtube.com/embed/94qn2-E9glM">
+</object>
+</div>
+<!-- {{juego.enlace_gameplay}} -->
+
+
+<div class="descripcion">
+<b>Descripcion:</b>
+{{juego.info_juego}}
+</div>
+
+<div class="torrentCompra">
+<b>Descarga el juego aqui:</b>
+<a href="{{juego.enlace_Torrent}}">Enlace Torrent</a>
+
+
+</div>
+
+<!-- {{juego.version}} -->
+<b>Si el juego te gusta, por favor cómpralo y ayuda a los desarrolladores.</b>
+<br>
+<b>Precio Mas barato:</b>
+{{juego.precio_compra}}
+€
+<br>
+<b>Enlace de compra del juego:</b>
+<a href="{{juego.enlace_compra}}">Enlace Compra</a>
+ </body>
+
+
+</html>

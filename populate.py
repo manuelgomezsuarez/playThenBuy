@@ -1,9 +1,13 @@
-from principal.models import Juego, Genero, Usuario
+import random
 import urllib2
+
 from bs4 import BeautifulSoup
-from django.db.transaction import commit_on_success
-from django.core.management import call_command
 from django.contrib.auth.models import User
+from django.core.management import call_command
+from django.db.transaction import commit_on_success
+
+from principal.models import Juego, Genero, Usuario, Puntuacion
+
 
 path = "data"
 
@@ -55,7 +59,8 @@ def populateJuegos():
             enlace_gameplay=data[8].decode('unicode-escape')
             info_juego=data[9].decode('unicode-escape')
             generosJuego=data[10]
-            juegoInstancia=Juego.objects.create(titulo=titulo, desarrolladora=desarrolladora,editor=editor,fecha_lanzamiento=fecha_lanzamiento,tamano=tamano,enlace_Torrent=enlace_Torrent,enlace_compra=enlace_compra,precio_compra=precio_compra,enlace_gameplay=enlace_gameplay,info_juego=info_juego)   
+            version=data[11]
+            juegoInstancia=Juego.objects.create(titulo=titulo, desarrolladora=desarrolladora,editor=editor,fecha_lanzamiento=fecha_lanzamiento,tamano=tamano,enlace_Torrent=enlace_Torrent,enlace_compra=enlace_compra,precio_compra=precio_compra,enlace_gameplay=enlace_gameplay,info_juego=info_juego,version=version)   
             
             for a in generosJuego: 
                 try:
@@ -82,7 +87,8 @@ def obtenDatosDePagina():
         listaJuegos=soup.find_all("ul",attrs={"class":"lcp_catlist"})
         for juego in listaJuegos[0].find_all("a"):
             try:
-                arrayEsclavo=[0,0,0,0,0,0,0,0,0,0,0]
+                arrayEsclavo=[0,0,0,0,0,0,0,0,0,0,0,0]
+                
                 enlaceJuego=(juego.get("href"))
                 tituloJuego=(juego.get("title")).encode("utf-8")
                 datosJuego=urllib2.urlopen(enlaceJuego).read()
@@ -147,14 +153,15 @@ def obtenDatosDePagina():
                 print(enlaceTorrent)
                 
                 
-                textToSearch = titulo
-                query = urllib2.quote(textToSearch)
-                url = "https://www.youtube.com/results?search_query=" + query
-                response = urllib2.urlopen(url)
-                html = response.read()
-                soup4 = BeautifulSoup(html,'html.parser')
-                videos=soup4.findAll(attrs={'class':'yt-uix-tile-link'})
-                enlaceGameplay= 'https://www.youtube.com' + videos[0]["href"]
+#                 textToSearch = titulo
+#                 query = urllib2.quote(textToSearch)
+#                 url = "https://www.youtube.com/results?search_query=" + query
+#                 url=url.replace("watch?v=","embed/")
+#                 response = urllib2.urlopen(url)
+#                 html = response.read()
+#                 soup4 = BeautifulSoup(html,'html.parser')
+#                 videos=soup4.findAll(attrs={'class':'yt-uix-tile-link'})
+#                 enlaceGameplay= 'https://www.youtube.com' + videos[0]["href"]
                 
                 arrayEsclavo[0]=titulo
                 arrayEsclavo[1]=desarrolladora
@@ -164,9 +171,10 @@ def obtenDatosDePagina():
                 arrayEsclavo[5]=enlaceTorrent
                 arrayEsclavo[6]=precioEnlaceJuego
                 arrayEsclavo[7]=precioJuego
-                arrayEsclavo[8]=enlaceGameplay
+                arrayEsclavo[8]="baneaso de ip"
                 arrayEsclavo[9]=informacionJuego
                 arrayEsclavo[10]=sepGeneros
+                arrayEsclavo[11]=tituloJuego
                 arrayMaestro.append(arrayEsclavo)
                 cont=cont+1
             except Exception as e:
@@ -175,8 +183,11 @@ def obtenDatosDePagina():
            
             
             print("*************")
-            if cont==50:
-                break
+            if cont==15:
+                print "Se extrajeron "+str(cont)+" juegos"
+                return arrayMaestro,set(generos)
+            
+            
     print "datos extraidos correctamente de la pagina"
     return arrayMaestro,set(generos)
       
@@ -206,11 +217,29 @@ def populateUsuarios():
         
     print("Usuarios insertados: " + str(Usuario.objects.count()))
     print("---------------------------------------------------------")
+    
+
+def populatePuntuaciones():
+    usuarios=[]
+    for n in range(1,5):
+        usuarios.append(Usuario.objects.get(id=n))
+    for u in usuarios:
+        for n in range(1,8):
+            puntuacionRandom=random.randrange(1,5)
+            juegoRandom=random.randrange(1,10)
+            juego=Juego.objects.get(id=juegoRandom)
+            Puntuacion.objects.create(usuario=u,juego=juego,valor=puntuacionRandom)
+    print("Puntuaciones insertadas: " + str(Puntuacion.objects.count()))
+    print("---------------------------------------------------------")
+    
+    
 
 def populateDatabase():
     populateJuegos()
     populateUserAccounts()
     populateUsuarios()
+    populatePuntuaciones()
+
 
 
     print("Terminada database population")

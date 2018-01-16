@@ -25,7 +25,7 @@ def populateGenero(generos):
             
     
     for i in generos:
-        print i
+        print (i)
         Genero.objects.create(nombre_genero=i)
 
     
@@ -97,7 +97,7 @@ def obtenDatosDePagina():
                 infoJuego=soup2.find("div",attrs={"class":"wordpress-post-tabs"})
                 infoJuego2=infoJuego.find_all("p")
                 informacionJuego=infoJuego2[0].text.encode("utf-8")
-                print informacionJuego
+                print (informacionJuego)
                 datosJuego=infoJuego2[1].text.split("\n")
                 titulo=tituloJuego.replace("'","")
                 genero="No Encontrado"
@@ -131,10 +131,10 @@ def obtenDatosDePagina():
                 else:
                     pesoConvertido=float(peso[1])
                     
-                print pesoConvertido
+                print (pesoConvertido)
                 
                 enlaceAPrecio="https://isthereanydeal.com/search/?q="+titulo.replace(" ","+").encode("utf-8")
-                print enlaceAPrecio
+                print (enlaceAPrecio)
                 datosPagina2 = urllib2.urlopen(enlaceAPrecio).read()
                 soup3 = BeautifulSoup(datosPagina2, 'html.parser')
                 precio =soup3.find("div",attrs={"class":"result"})
@@ -143,8 +143,8 @@ def obtenDatosDePagina():
                 precioEnlaceJuego=precio1.get("href")
                 precioJuego=float(precio1.span.text.replace(",",".")[:-1])
                 
-                print precioEnlaceJuego
-                print precioJuego
+                print (precioEnlaceJuego)
+                print (precioJuego)
                 
                 EnlacesDescarga=soup2.findAll("a")
                 enlaceTorrent="Subiendo Torrent, intentelo en otro momento"
@@ -188,17 +188,17 @@ def obtenDatosDePagina():
                 arrayMaestro.append(arrayEsclavo)
                 cont=cont+1
             except Exception as e:
-                print e
+                print (e)
                 pass
            
             
             print("*************")
             if cont==100:
-                print "Se extrajeron "+str(cont)+" juegos"
+                print ("Se extrajeron "+str(cont)+" juegos")
                 return arrayMaestro,set(generos)
             
             
-    print "datos extraidos correctamente de la pagina"
+    print ("datos extraidos correctamente de la pagina")
     return arrayMaestro,set(generos)
       
 def populateUserAccounts():

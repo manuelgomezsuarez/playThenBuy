@@ -3,7 +3,7 @@ from principal.models import Genero
 from django.core.validators import MinValueValidator,MaxValueValidator
 
 class TituloForm(forms.Form):
-    titulo = forms.CharField(label='Titulo juego')
+    titulo = forms.CharField(label='Titulo del juego')
 
 class PuntuacionForm(forms.Form):
     valor = forms.IntegerField(label='valor',required=False,validators=[MinValueValidator(1),MaxValueValidator(5)])

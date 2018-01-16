@@ -1,53 +1,47 @@
 <html>
+
 <head>
-<meta charset="utf-8">
-<title>Filtrar por genero</title>
- <style type="text/css">
- div.numeros{
-    position: absolute;
-    top: 25%;
-    left: 20%;
-     background-color: #88c6e8;
-}
-
- div.generos{
-    position: absolute;
-     background-color: #88c6e8;
-
-}
-
- 
- </style>
+    <meta charset="utf-8">
+    <title>Filtrar por genero</title>
+    <style type="text/css">
+        div.numeros{
+            position: absolute;
+            top: 25%;
+            left: 20%;
+             background-color: #88c6e8;
+        }
+        
+         div.generos{
+            position: absolute;
+             background-color: #88c6e8;
+        
+        }
+    </style>
 </head>
+
 <body>
-<header>
-{% include 'header.html' %}
+    <header>
+        {% include 'header.html' %}
 
-<h1>Filtrar filtros</h1>
-<form method="post" id='form'>
-  {% csrf_token %}
-  
-  <div class="generos">
-  <h2>
-  {{ form.Generos.label_tag }}
-  </h2>
-  {{form.Generos.errors}}
-  {{form.Generos}}
-  </div>
-  <div class="numeros">
+        <h1>Filtrar filtros</h1>
+        <form method="post" id='form'>
+            {% csrf_token %}
 
-  {{ form.precioMin.label_tag }}
-  {{form.precioMin}}
-  {{form.precioMin.errors}}
-  <br>
-    
-  {{ form.precioMax.label_tag }}
-  {{form.precioMax}}
-  {{form.precioMax.errors}}
-  
-<br><br>
-  <button type="submit">Submit</button>
-  </div>
-</form>
+            <div class="generos">
+                <h2>
+                    {{ form.Generos.label_tag }}
+                </h2>
+                {{form.Generos.errors}} {{form.Generos}}
+            </div>
+            <div class="numeros">
+
+                {{ form.precioMin.label_tag }} {{form.precioMin}} {{form.precioMin.errors}}
+                <br> {{ form.precioMax.label_tag }} {{form.precioMax}} {{form.precioMax.errors}}
+
+                <br><br>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
 </body>
+
 </html>

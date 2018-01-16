@@ -193,7 +193,7 @@ def obtenDatosDePagina():
            
             
             print("*************")
-            if cont==10:
+            if cont==100:
                 print "Se extrajeron "+str(cont)+" juegos"
                 return arrayMaestro,set(generos)
             
@@ -237,13 +237,18 @@ def populateUsuarios():
     
 
 def populatePuntuaciones():
+    print("Cargando Puntuaciones ...")
+    
+    while Puntuacion.objects.count():
+        ids = Puntuacion.objects.values_list('pk', flat=True)[:100]
+        Puntuacion.objects.filter(pk__in = ids).delete()
     usuarios=[]
     for n in range(1,5):
         usuarios.append(Usuario.objects.get(id=n))
     for u in usuarios:
-        for n in range(1,8):
+        for n in range(1,30):
             puntuacionRandom=random.randrange(1,5)
-            juegoRandom=random.randrange(1,10)
+            juegoRandom=random.randrange(1,80)
             juego=Juego.objects.get(id=juegoRandom)
             Puntuacion.objects.create(usuario=u,juego=juego,valor=puntuacionRandom)
     print("Puntuaciones insertadas: " + str(Puntuacion.objects.count()))

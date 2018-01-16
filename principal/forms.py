@@ -9,8 +9,8 @@ class PuntuacionForm(forms.Form):
     valor = forms.IntegerField(label='valor',required=False,validators=[MinValueValidator(1),MaxValueValidator(5)])
 
 class FiltroForm(forms.Form):
-    precioMin= forms.FloatField(label='Precio maximo',required=False,validators=[MinValueValidator(0)])
-    precioMax= forms.FloatField(label='Precio mimimo',required=False,validators=[MinValueValidator(0)])
+    precioMin= forms.FloatField(label='Precio Minimo',required=False,validators=[MinValueValidator(0)])
+    precioMax= forms.FloatField(label='Precio Maximo',required=False,validators=[MinValueValidator(0)])
     generos=Genero.objects.all()
     opciones=[]
     for i in generos:

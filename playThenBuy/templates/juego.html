@@ -123,6 +123,10 @@
             {% if login.is_authenticated %}
             <a href="/puntua/?id={{juego.id}}">Puntuar Este Juego</a> {% endif %}
             <br>
+
+            <br>
+            <a href="/obtenerTweets/?id={{juego.id}}">Opinión de la gente en Twitter</a>
+            <br><br>
             <object width="400" height="300" data="{{juego.enlace_gameplay}}">
 </object>
 

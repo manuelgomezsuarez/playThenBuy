@@ -9,6 +9,9 @@ from django.template import RequestContext
 from principal.forms import TituloForm, FiltroForm, PuntuacionForm
 from principal.models import Juego, Usuario, Puntuacion
 import recommendations
+from pattern.web import Twitter
+from pattern.en import tag
+from pattern.vector import KNN, count
 
 
 def index(request): 
@@ -189,5 +192,21 @@ def puntua(request):
         form = PuntuacionForm()
         
     return render(request, 'puntua.html', {'form': form})
+
+
+def obtenerTweets(request):
+    twitterEn = Twitter(language='en')
+    twitterEs = Twitter(language='es')
+    idJuego = request.GET.get("id")
+    juego = Juego.objects.get(id=idJuego)
+    tweets = []
+    for tweet in twitterEs.search(juego.titulo, cached=False):
+        tweets.append(tweet.text)
+    for tweet in twitterEn.search(juego.titulo, cached=False):
+        tweets.append(tweet.text)
+    return render(request, 'obtenerTweets.html', {'tweets': tweets})
+    
+
+
 
 

@@ -1,0 +1,7 @@
+beautifulsoup4==4.6.0
+Django==1.4.7
+numpy==1.13.3
+Pattern==2.6
+pytz==2013b0
+timestring==1.6.2
+Whoosh==2.7.4

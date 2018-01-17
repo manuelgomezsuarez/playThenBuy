@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title>Filtrar por genero</title>
+    
     <style type="text/css">
         div.numeros{
             position: absolute;
-            top: 25%;
+            top: 30%;
             left: 20%;
              background-color: #88c6e8;
         }
@@ -24,6 +25,7 @@
         {% include 'header.html' %}
 
         <h1>Filtrar filtros</h1>
+        <h2>No es necesario que aplique todos simultaneamente</h2>
         <form method="post" id='form'>
             {% csrf_token %}
 
@@ -37,7 +39,7 @@
 
                 {{ form.precioMin.label_tag }} {{form.precioMin}} {{form.precioMin.errors}}
                 <br> {{ form.precioMax.label_tag }} {{form.precioMax}} {{form.precioMax.errors}}
-
+				<br> {{ form.palabraDescripcion.label_tag }} {{form.palabraDescripcion}} {{form.palabraDescripcion.errors}}
                 <br><br>
                 <button type="submit">Submit</button>
             </div>

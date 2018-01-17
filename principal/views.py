@@ -10,8 +10,9 @@ from principal.forms import TituloForm, FiltroForm, PuntuacionForm
 from principal.models import Juego, Usuario, Puntuacion
 import recommendations
 from pattern.web import Twitter
-from pattern.en import tag
+
 from pattern.vector import KNN, count
+from populate import busquedaTitulos
 
 
 def index(request): 
@@ -67,7 +68,7 @@ def buscarTitulo(request):
         
         if form.is_valid():
             tituloJuego = form.cleaned_data['titulo']
-            print tituloJuego
+            
             juegos= Juego.objects.filter(titulo__icontains = tituloJuego)
     
             return render_to_response('listadoJuegos.html', {'juegos':juegos})
@@ -87,6 +88,8 @@ def filtros(request):
             
             precioMin = form.cleaned_data.get('precioMin')
             precioMax = form.cleaned_data.get('precioMax')
+            palabraDescripcion = form.cleaned_data.get('palabraDescripcion')
+            
             
             if precioMin==None:
                 precioMin=0.   
@@ -107,11 +110,24 @@ def filtros(request):
                     if set(generosForm)<set(generosJuegoBucle):
                         
                         juegos.append(juego)
-                        
+                 
                 juegosFiltrados=[]
-                for juego in juegos:
-                    if juego.precio_compra>=precioMin and juego.precio_compra<=precioMax:
-                        juegosFiltrados.append(juego)
+                
+                if palabraDescripcion=="":
+
+                
+                    for juego in juegos:
+                        if juego.precio_compra>=precioMin and juego.precio_compra<=precioMax:
+                            juegosFiltrados.append(juego)
+                else:  
+                        
+                    for juego in juegos:
+                        if juego.precio_compra>=precioMin and juego.precio_compra<=precioMax and (juego.titulo in busquedaTitulos(palabraDescripcion)):
+                            juegosFiltrados.append(juego)
+                
+                
+                        
+                        
                         
                 return render_to_response('listadoJuegos.html', {'juegos':juegosFiltrados})
             
@@ -147,7 +163,7 @@ def juego(request):
             
             juegosRecomendadosUsuario.append(j[0])
         juegosQueRecomendo=Puntuacion.objects.filter(usuario_id=request.user.id)
-        print juegosQueRecomendo
+        
         juegoUsuario=juegosQueRecomendo[random.randrange(0,len(juegosQueRecomendo)+1)].juego
 
     except:

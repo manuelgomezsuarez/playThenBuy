@@ -11,6 +11,7 @@ class PuntuacionForm(forms.Form):
 class FiltroForm(forms.Form):
     precioMin= forms.FloatField(label='Precio Minimo',required=False,validators=[MinValueValidator(0)])
     precioMax= forms.FloatField(label='Precio Maximo',required=False,validators=[MinValueValidator(0)])
+    palabraDescripcion= forms.CharField(label='Palabras en la descripcion',required=False)
     generos=Genero.objects.all()
     opciones=[]
     for i in generos:

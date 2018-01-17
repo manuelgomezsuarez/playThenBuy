@@ -1,5 +1,14 @@
+# -*- coding: utf-8 -*-
 import random
 import urllib2
+import os
+from whoosh.index import *
+from whoosh.fields import *
+from whoosh.qparser import QueryParser
+from whoosh.query import *
+from whoosh.query.terms import Term
+import shutil
+
 
 from bs4 import BeautifulSoup
 from django.contrib.auth.models import User
@@ -45,6 +54,14 @@ def populateJuegos():
     
     populateGenero(arrayMaestro[1])
     
+    if os.path.exists("index"):
+        shutil.rmtree("index")
+    
+    schema = Schema(titulo=KEYWORD(stored=True), descripcion=TEXT(stored=True))
+    
+    os.mkdir("index")
+    ix = create_in("index", schema)
+    writer = ix.writer()  
     for data in arrayMaestro[0]:
         try:
             print(data)
@@ -61,8 +78,14 @@ def populateJuegos():
             generosJuego=data[10]
             version=data[11]
             imagen_gameplay=data[12]
-            juegoInstancia=Juego.objects.create(titulo=titulo, desarrolladora=desarrolladora,editor=editor,fecha_lanzamiento=fecha_lanzamiento,tamano=tamano,enlace_Torrent=enlace_Torrent,enlace_compra=enlace_compra,precio_compra=precio_compra,enlace_gameplay=enlace_gameplay,info_juego=info_juego,version=version,imagen_gameplay=imagen_gameplay)   
+            juegoInstancia=Juego.objects.create(titulo=titulo, desarrolladora=desarrolladora,editor=editor,fecha_lanzamiento=fecha_lanzamiento,tamano=tamano,enlace_Torrent=enlace_Torrent,enlace_compra=enlace_compra,precio_compra=precio_compra,enlace_gameplay=enlace_gameplay,info_juego=info_juego,version=version,imagen_gameplay=imagen_gameplay) 
+       
+            writer.add_document(titulo=titulo,descripcion=info_juego.lower())
+            print(writer)
             
+            
+            
+                 
             for a in generosJuego: 
                 try:
                     generoJuego = Genero.objects.get(nombre_genero=a)
@@ -71,9 +94,12 @@ def populateJuegos():
                     generoJuego = None   
         except:
             pass
+    writer.commit()
+    print("Sistema de indexación creado correctamente") 
+     
     print("Juegos insertados: " + str(Juego.objects.count()))
     print("---------------------------------------------------------")  
-     
+    
   
 
     
@@ -193,7 +219,7 @@ def obtenDatosDePagina():
            
             
             print("*************")
-            if cont==100:
+            if cont==120:
                 print ("Se extrajeron "+str(cont)+" juegos")
                 return arrayMaestro,set(generos)
             
@@ -262,14 +288,31 @@ def populateDatabase():
     populateUsuarios()
     populatePuntuaciones()
 
+def busquedaTitulos(descripcion):
+    ix = open_dir("index")
+    
+#     print ix.doc_count_all()    #esto te dice cuantos has indexado por si no estas seguro
+#     for r in ix.searcher().documents():
+#         print("entrada: "+str(r)) 
+    
+    
+    qp = QueryParser("descripcion", schema=ix.schema)
+    q = qp.parse(unicode(str(descripcion)))
+    
+    s=ix.searcher()
+    results = s.search(q)
+    titulos=[]
+    for r in results:
 
+        titulos.append(r.get("titulo"))
 
-    print("Terminada database population")
-
+    return titulos
 
 
 
 
 if __name__ == '__main__':
     populateDatabase()
+    #busquedaTitulos("cats")
+
 
